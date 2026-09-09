@@ -95,20 +95,11 @@
     justify-content:space-between;
   }
   .logo{
-    font-size:1.5rem;
-    font-weight:700;
-    letter-spacing:.02em;
-    color:var(--white);
-    position:relative;
-    padding-bottom:4px;
+    height:40px;
   }
-  .logo::after{
-    content:"";
-    position:absolute;
-    bottom:0;left:0;
-    width:70%;
-    height:3px;
-    background:var(--orange);
+  .logo img{
+    height:100%;
+    width:auto;
   }
   .menu-toggle{
     display:flex;
@@ -463,20 +454,12 @@
     margin-bottom:50px;
   }
   .footer-logo{
-    font-size:1.5rem;
-    font-weight:700;
-    color:var(--white);
-    position:relative;
-    display:inline-block;
-    padding-bottom:4px;
+    height:40px;
     margin-bottom:16px;
   }
-  .footer-logo::after{
-    content:"";
-    position:absolute;
-    bottom:0;left:0;
-    width:70%;height:3px;
-    background:var(--orange);
+  .footer-logo img{
+    height:100%;
+    width:auto;
   }
   .footer-col h3{
     font-size:.85rem;
@@ -561,7 +544,7 @@
 <header>
   <div class="container">
     <nav>
-      <div class="logo">CAPTIK3D</div>
+      <div class="logo"><a href="#"><img src="Logo150x50mm.png" alt="CAPTIK3D Logo" /></a></div>
       <button class="menu-toggle" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -736,7 +719,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-col">
-        <div class="footer-logo">CAPTIK3D</div>
+        <div class="footer-logo"><a href="#"><img src="Logo150x50mm.png" alt="CAPTIK3D Logo" /></a></div>
         <p style="color:rgba(255,255,255,.8);font-size:.95rem;max-width:280px;line-height:1.6">
           Bureau d'ingénierie spécialisé en capture de la réalité.
         </p>
