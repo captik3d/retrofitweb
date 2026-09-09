@@ -7,16 +7,21 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Autorise l'écriture dans le dépôt
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Récupère l'historique complet
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}  # Utilise le token automatique de GitHub
 
       - name: Sync main to gh-pages
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git checkout gh-pages
           git reset --hard main
           git push origin gh-pages --force
