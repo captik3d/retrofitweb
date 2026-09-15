@@ -88,6 +88,7 @@
     background:rgba(63,63,63,.92);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--border);
+    will-change:transform;
   }
   nav{
     display:flex;
@@ -762,6 +763,37 @@
   document.querySelector('.menu-toggle')?.addEventListener('click', function() {
     alert('Menu navigation — démo');
   });
+
+  // Header : visible sur le hero, se referme en suivant le scroll une fois
+  // le hero quitté, se réouvre quand on revient sur le hero.
+  (function(){
+    const header = document.querySelector('header');
+    const hero = document.querySelector('.hero');
+    if(!header || !hero) return;
+    let ticking = false;
+    function update(){
+      ticking = false;
+      const h = header.offsetHeight;
+      // Distance entre le bas du hero et le haut du viewport.
+      const heroBottom = hero.getBoundingClientRect().bottom;
+      // Tant que le hero reste visible sous le header, on reste affiché.
+      // Dès que le hero quitte le haut, le header se referme à la vitesse du scroll.
+      let offset = -(h - heroBottom);
+      if(offset > 0) offset = 0;            // hero visible -> 0
+      if(offset < -h) offset = -h;          // hero quitté -> entièrement masqué
+      header.style.transform = 'translateY(' + offset + 'px)';
+    }
+    function onScroll(){
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll, {passive:true});
+    update();
+  })();
+
   // Smooth scroll for in-page links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
