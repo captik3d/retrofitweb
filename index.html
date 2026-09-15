@@ -771,12 +771,12 @@
     const header = document.querySelector('header');
     const hero = document.querySelector('.hero');
     if(!header || !hero) return;
-    const h = header.offsetHeight;
     let offset = 0;            // position courante du header, entre 0 et -h
     let lastY = window.scrollY;
     let ticking = false;
     function update(){
       ticking = false;
+      const h = header.offsetHeight;  // hauteur réelle, recalculée (logo chargé, responsive...)
       const y = window.scrollY;
       const heroBottom = hero.getBoundingClientRect().bottom + y; // bas du hero (absolute)
       const topViewport = y;                                    // haut du viewport (absolute)
@@ -792,7 +792,7 @@
           offset -= delta;        // delta négatif, donc on augmente offset
         }
         if(offset > 0) offset = 0;
-        if(offset < -h) offset = -h;
+        if(offset < -h) offset = -h;   // borne : masqué entièrement
       }
       header.style.transform = 'translateY(' + offset + 'px)';
       lastY = y;
