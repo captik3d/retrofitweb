@@ -764,24 +764,38 @@
     alert('Menu navigation — démo');
   });
 
-  // Header : visible sur le hero, se referme en suivant le scroll une fois
-  // le hero quitté, se réouvre quand on revient sur le hero.
+  // Header : visible tant que le hero est affiché. Hors hero, il se masque
+  // progressivement quand on scrolle vers le bas et se réaffiche progressivement
+  // quand on scrolle vers le haut (même en dehors de la zone hero).
   (function(){
     const header = document.querySelector('header');
     const hero = document.querySelector('.hero');
     if(!header || !hero) return;
+    const h = header.offsetHeight;
+    let offset = 0;            // position courante du header, entre 0 et -h
+    let lastY = window.scrollY;
     let ticking = false;
     function update(){
       ticking = false;
-      const h = header.offsetHeight;
-      // Distance entre le bas du hero et le haut du viewport.
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      // Tant que le hero reste visible sous le header, on reste affiché.
-      // Dès que le hero quitte le haut, le header se referme à la vitesse du scroll.
-      let offset = -(h - heroBottom);
-      if(offset > 0) offset = 0;            // hero visible -> 0
-      if(offset < -h) offset = -h;          // hero quitté -> entièrement masqué
+      const y = window.scrollY;
+      const heroBottom = hero.getBoundingClientRect().bottom + y; // bas du hero (absolute)
+      const topViewport = y;                                    // haut du viewport (absolute)
+      if(topViewport <= heroBottom){
+        // Le hero est encore visible sous le header : menu affiché.
+        offset = 0;
+      } else {
+        // Hors hero : on ajuste selon la direction du scroll, à la vitesse du scroll.
+        const delta = y - lastY;
+        if(delta > 0){            // scroll vers le bas -> on masque
+          offset -= delta;
+        } else if(delta < 0){     // scroll vers le haut -> on réaffiche
+          offset -= delta;        // delta négatif, donc on augmente offset
+        }
+        if(offset > 0) offset = 0;
+        if(offset < -h) offset = -h;
+      }
       header.style.transform = 'translateY(' + offset + 'px)';
+      lastY = y;
     }
     function onScroll(){
       if(!ticking){
